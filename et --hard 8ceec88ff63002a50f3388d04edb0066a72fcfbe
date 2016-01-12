@@ -1,0 +1,29 @@
+[33mcommit cbaacecfaa13514b12fb138db163698f5f59b655[m
+Author: itsmerajit <rajit.saha12@gmail.com>
+Date:   Mon Jan 11 07:14:48 2016 -0500
+
+    leno_defconfig added && St2w/St2w Added
+
+[33mcommit 8ceec88ff63002a50f3388d04edb0066a72fcfbe[m
+Author: itsmerajit <rajit.saha12@gmail.com>
+Date:   Mon Jan 11 05:30:22 2016 -0500
+
+    added faux soundcontrol 3.4
+
+[33mcommit ad9dd47b1096ac9af70546beed193f70b0d78f1f[m
+Author: itsmerajit <rajit.saha12@gmail.com>
+Date:   Mon Jan 11 04:41:40 2016 -0500
+
+    exfat support
+
+[33mcommit 161133bc1748008a5930f03db58819a86b31619f[m
+Author: itsmerajit <rajit.saha12@gmail.com>
+Date:   Mon Jan 11 03:48:27 2016 -0500
+
+    Swappiness reduced of 60 to 40
+
+[33mcommit ab6f5290e6af48fc3190eb650b059195d63dfa04[m
+Author: itsmerajit <rajit.saha12@gmail.com>
+Date:   Mon Jan 11 02:40:12 2016 -0500
+
+    initial commit
