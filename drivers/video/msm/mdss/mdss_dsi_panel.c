@@ -1,5 +1,5 @@
 /* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
- *
+ * Copyright (C) 2016, Rajit Saha <rajit.saha12@gmail.com> (Port Otus) 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
  * only version 2 as published by the Free Software Foundation.
@@ -31,6 +31,9 @@
 #include <linux/gpio.h>
 #include <linux/interrupt.h>
 #include <mach/mmi_panel_notifier.h>
+#ifdef CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE
+#include <linux/input/doubletap2wake.h>
+#endif
 
 #include "mdss_dsi.h"
 #include "mdss_fb.h"
@@ -788,6 +791,12 @@ static int mdss_dsi_panel_on(struct mdss_panel_data *pdata)
 	char *dropbox_issue = NULL;
 	static int dropbox_count;
 
+#ifdef CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE
+	bool prevent_sleep = (dt2w_switch > 0);
+	if (prevent_sleep && in_phone_call)
+		prevent_sleep = false;
+#endif
+
 	if (pdata == NULL) {
 		pr_err("%s: Invalid input data\n", __func__);
 		return -EINVAL;
@@ -890,6 +899,11 @@ end:
 		dropbox_count = 0;
 
 	pr_info("%s-. Pwr_mode(0x0A) = 0x%x\n", __func__, pwr_mode);
+#ifdef CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE
+	if (prevent_sleep) {
+	dt2w_scr_suspended = false;
+	}
+#endif
 
 	return 0;
 }
@@ -899,6 +913,11 @@ static int mdss_dsi_panel_off(struct mdss_panel_data *pdata)
 	struct mipi_panel_info *mipi;
 	struct mdss_dsi_ctrl_pdata *ctrl = NULL;
 	struct msm_fb_data_type *mfd;
+#ifdef CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE
+	bool prevent_sleep = (dt2w_switch > 0);
+	if (prevent_sleep && in_phone_call)
+		prevent_sleep = false;
+#endif
 
 	if (pdata == NULL) {
 		pr_err("%s: Invalid input data\n", __func__);
@@ -947,7 +966,11 @@ disable_regs:
 		pdata->panel_info.cabc_mode = CABC_OFF_MODE;
 
 	pr_info("%s-:\n", __func__);
-
+#ifdef CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE
+	if (prevent_sleep) {
+	dt2w_scr_suspended = true;
+	}
+#endif
 	return 0;
 }
 

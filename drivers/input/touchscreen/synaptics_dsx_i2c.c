@@ -4,7 +4,7 @@
  * Copyright (C) 2012 Synaptics Incorporated
  *
  * Copyright (C) 2012 Alexandra Chin <alexandra.chin@tw.synaptics.com>
- * Copyright (C) 2012 Scott Lin <scott.lin@tw.synaptics.com>
+ * Copyright (C) 2016, Rajit Saha <rajit.saha12@gmail.com> (Port Otus) 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,10 @@
 #include "synaptics_dsx_i2c.h"
 #ifdef KERNEL_ABOVE_2_6_38
 #include <linux/input/mt.h>
+#endif
+
+#ifdef CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE
+#include <linux/input/doubletap2wake.h>
 #endif
 
 #define DRIVER_NAME "synaptics_dsx_i2c"
@@ -3565,7 +3569,14 @@ static int synaptics_dsx_panel_cb(struct notifier_block *nb,
 	int *blank;
 	struct synaptics_rmi4_data *rmi4_data =
 		container_of(nb, struct synaptics_rmi4_data, panel_nb);
-
+#ifdef CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE
+	bool prevent_sleep = (dt2w_switch > 0);
+			if (prevent_sleep) {
+				pr_debug("suspend avoided!\n");
+			
+				return 0;
+			} else {
+#endif
 	if (evdata && evdata->data && event == FB_EVENT_BLANK) {
 		blank = evdata->data;
 		if (*blank == FB_BLANK_UNBLANK) {
@@ -3574,6 +3585,9 @@ static int synaptics_dsx_panel_cb(struct notifier_block *nb,
 			synaptics_rmi4_suspend(&(rmi4_data->input_dev->dev));
 		}
 	}
+#ifdef CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE
+	}
+#endif
 
 	return 0;
 }
