@@ -2145,6 +2145,8 @@ static int synaptics_rmi4_irq_enable(struct synaptics_rmi4_data *rmi4_data,
 			return retval;
 		}
 
+		irq_set_irq_wake(rmi4_data->irq, 1);
+
 		dev_dbg(&rmi4_data->i2c_client->dev,
 				"%s: Started irq thread\n", __func__);
 
@@ -2154,6 +2156,8 @@ static int synaptics_rmi4_irq_enable(struct synaptics_rmi4_data *rmi4_data,
 			disable_irq(rmi4_data->irq);
 			free_irq(rmi4_data->irq, rmi4_data);
 			rmi4_data->irq_enabled = false;
+
+		irq_set_irq_wake(rmi4_data->irq, 0);
 
 		dev_dbg(&rmi4_data->i2c_client->dev,
 				"%s: Stopped irq thread\n", __func__);
