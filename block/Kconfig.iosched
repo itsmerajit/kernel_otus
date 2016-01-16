@@ -12,7 +12,7 @@ config IOSCHED_NOOP
 	  that do their own scheduling and require only minimal assistance from
 	  the kernel.
 
-onfig IOSCHED_SIO
+config IOSCHED_SIO
 	tristate "Simple I/O scheduler"
 	default y
 	---help---
