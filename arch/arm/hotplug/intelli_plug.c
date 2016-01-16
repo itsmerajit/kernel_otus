@@ -52,7 +52,7 @@ static struct delayed_work intelli_plug_boost;
 static struct workqueue_struct *intelliplug_wq;
 static struct workqueue_struct *intelliplug_boost_wq;
 
-static unsigned int intelli_plug_active = 1;
+static unsigned int intelli_plug_active = 0;
 module_param(intelli_plug_active, uint, 0664);
 
 static unsigned int touch_boost_active = 1;
@@ -252,6 +252,7 @@ static void unplug_cpu(int min_active_cpu)
 	}
 }
 
+static void __ref intelli_plug_work_fn(struct work_struct *work)
 {
 	unsigned int nr_run_stat;
 	unsigned int cpu_count = 0;
@@ -430,7 +431,6 @@ static struct attribute_group intelli_plug_perf_boost_attr_group = {
 
 static struct kobject *intelli_plug_perf_boost_kobj;
 /* sysfs interface for performance boost (END) */
-
 
 #ifdef CONFIG_POWERSUSPEND
 static void intelli_plug_suspend(struct power_suspend *handler)
@@ -655,4 +655,5 @@ MODULE_DESCRIPTION("'intell_plug' - An intelligent cpu hotplug driver for "
 	"Low Latency Frequency Transition capable processors");
 MODULE_LICENSE("GPL");
 
-late_initcall(intelli_plug_init);
+late_initcall(intelli_plug_init); 
+
