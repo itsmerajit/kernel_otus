@@ -979,7 +979,7 @@ static inline void inc_nr_running(struct rq *rq)
 	nr_stats->ave_nr_running = do_avg_nr_running(rq);
 	nr_stats->nr_last_stamp = rq->clock_task;
 #endif
->>>>>>> 7d1e149... intelli_plug: refactor stats calculation code and add per cpu nr_running stats
+
 	rq->nr_running++;
 #ifdef CONFIG_INTELLI_PLUG
 	write_seqcount_end(&nr_stats->ave_seqcnt);
