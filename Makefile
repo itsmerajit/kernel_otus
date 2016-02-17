@@ -350,8 +350,7 @@ KALLSYMS	= scripts/kallsyms
 PERL		= perl
 CHECK		= sparse
 
-# Use the wrapper for the compiler.  This wrapper scans for new
-# warnings and causes the build to stop upon encountering them.
+CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
                   -Wbitwise -Wno-return-void $(CF)
 OPTIMIZATION_FLAGS = -mtune=cortex-a7 -mfpu=neon \
                      -ffast-math -fsingle-precision-constant \
@@ -578,7 +577,6 @@ KBUILD_CFLAGS += -O3 -fmodulo-sched -fmodulo-sched-allow-regmoves -fno-tree-vect
 endif
 ifdef CONFIG_CC_OPTIMIZE_FAST
 KBUILD_CFLAGS += -Ofast -fmodulo-sched -fmodulo-sched-allow-regmoves -fno-tree-vectorize -fno-inline-functions
-
 endif
 
 include $(srctree)/arch/$(SRCARCH)/Makefile
